@@ -1,9 +1,10 @@
 package com.dabolink.rickandmorty.models
 
+import com.dabolink.rickandmorty.ui.main.TextItem
 import org.json.JSONArray
 import org.json.JSONObject
 
-data class Location(val json: JSONObject) {
+data class Location(val json: JSONObject) : TextItem{
     val id: Int = json.getInt("id")
     val name: String = json.getString("name")
     val type: String = json.getString("type")
@@ -13,6 +14,9 @@ data class Location(val json: JSONObject) {
         residentsJSON.getString(it)
     }
     var created: String = json.getString("created")
+    override fun getText(): String {
+        return "[$dimension] $name"
+    }
 
     override fun toString(): String {
         return name

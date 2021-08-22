@@ -39,10 +39,10 @@ class CharacterListFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val textView: TextView = binding.sectionLabel
+        /*val textView: TextView = binding.sectionLabel
         mainVM.characters.observe(viewLifecycleOwner, Observer {
-            textView.text = Arrays.toString(it)
-        })
+            textView.text = "$it"
+        })*/
         return root
     }
 

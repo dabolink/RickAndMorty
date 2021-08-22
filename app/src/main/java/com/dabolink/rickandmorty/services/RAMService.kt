@@ -12,9 +12,9 @@ import java.io.IOException
 
 class RAMService {
     private val apiCLI = OkHttpClient()
-    fun getAllCharacters(): LiveData<Array<Character>> {
+    fun getAllCharacters(): LiveData<List<Character>> {
 
-        val charactersLD: MutableLiveData<Array<Character>> = MutableLiveData()
+        val charactersLD: MutableLiveData<List<Character>> = MutableLiveData()
         makeRequest("/character", object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 println(e)
@@ -26,7 +26,7 @@ class RAMService {
                         val charactersRespJSON = JSONObject(resp)
                         val charactersJSON = charactersRespJSON.getJSONArray("results")
                         //val apiINFO = APICallInfo(charactersJSON.getJSONObject("info"))
-                        val characters: Array<Character> = Array(charactersJSON.length()) {
+                        val characters: List<Character> = List(charactersJSON.length()) {
                             Character(charactersJSON.getJSONObject(it))
                         }
                         charactersLD.postValue(characters)
@@ -38,8 +38,8 @@ class RAMService {
         return charactersLD
     }
 
-    fun getAllLocations(): LiveData<Array<Location>> {
-        val locationsLD: MutableLiveData<Array<Location>> = MutableLiveData()
+    fun getAllLocations(): LiveData<List<Location>> {
+        val locationsLD: MutableLiveData<List<Location>> = MutableLiveData()
 
         makeRequest("/location", object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -52,7 +52,7 @@ class RAMService {
                         val locationsRespJSON = JSONObject(resp)
                         val locationsJSON = locationsRespJSON.getJSONArray("results")
                         //val apiINFO = APICallInfo(charactersJSON.getJSONObject("info"))
-                        val locations: Array<Location> = Array(locationsJSON.length()) {
+                        val locations: List<Location> = List(locationsJSON.length()) {
                             Location(locationsJSON.getJSONObject(it))
                         }
                         locationsLD.postValue(locations)
@@ -64,8 +64,8 @@ class RAMService {
         return locationsLD
     }
 
-    fun getAllEpisodes(): LiveData<Array<Episode>> {
-        val episodesLD: MutableLiveData<Array<Episode>> = MutableLiveData()
+    fun getAllEpisodes(): LiveData<List<Episode>> {
+        val episodesLD: MutableLiveData<List<Episode>> = MutableLiveData()
 
         makeRequest("/episode", object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -78,7 +78,7 @@ class RAMService {
                         val episodesRespJSON = JSONObject(resp)
                         val episodesJSON = episodesRespJSON.getJSONArray("results")
                         //val apiINFO = APICallInfo(charactersJSON.getJSONObject("info"))
-                        val episodes: Array<Episode> = Array(episodesJSON.length()) {
+                        val episodes: List<Episode> = List(episodesJSON.length()) {
                             Episode(episodesJSON.getJSONObject(it))
                         }
                         episodesLD.postValue(episodes)

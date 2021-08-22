@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.dabolink.rickandmorty.R
 import com.dabolink.rickandmorty.databinding.FragmentMainBinding
 import com.dabolink.rickandmorty.models.Character
@@ -39,10 +41,15 @@ class LocationListFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val textView: TextView = binding.sectionLabel
+        val recyclerView: RecyclerView = binding.recyclerview
+        val adapter = TextAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
         mainVM.locations.observe(viewLifecycleOwner, Observer {
-            textView.text = Arrays.toString(it)
+            println("$it")
+            adapter.setItems(it)
         })
+
         return root
     }
 
