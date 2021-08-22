@@ -19,4 +19,8 @@ data class Character(val json: JSONObject) {
     }
     val url: String = json.getString("url")
     val created_at: String = json.getString("created")
+
+    override fun toString(): String {
+        return name
+    }
 }
