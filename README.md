@@ -1,15 +1,26 @@
 # Rick And Morty Wiki
 
+## what is this?
+this App uses the rick and morty API (https://rickandmortyapi.com/documentation) to generate a wiki of data about
+characters, locations and episodes
+
+currently it has list of all values of each type and can navigate to individual characters in order to see an image of them
+
+still to be added is:
+- ability to go to episodes/locations/characters from other episodes/locations/characters
+- ability to store data offline using a database (room probably)
+- better UI components (not my forte)
+
 # TODO
 - [x] list items
     - episodes
     - locations
     - characters
 - [x]paging
-- []individual pages
-- []get images
+- [x]individual pages
+- [x]get images
 - []more pleasant UI
 - []favorite items?
 
 # ISSUES
-- [] on back recyclerview not redrawing
+- [x] on back recyclerview not redrawing

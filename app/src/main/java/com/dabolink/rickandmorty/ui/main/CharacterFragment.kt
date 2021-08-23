@@ -1,6 +1,5 @@
 package com.dabolink.rickandmorty.ui.main
 
-import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.dabolink.rickandmorty.databinding.CharacterFragmentBinding
 import com.dabolink.rickandmorty.viewmodels.CharacterViewModel
 
@@ -22,6 +22,14 @@ class CharacterFragment : Fragment() {
 
     private lateinit var characterVM: CharacterViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            mCharID = it.getInt(ARG_CHARACTER_ID)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,15 +37,11 @@ class CharacterFragment : Fragment() {
         _binding = CharacterFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        arguments?.let {
-            mCharID = it.getInt(ARG_CHARACTER_ID)
-        }
-
         val vmFactory = CharacterViewModel.Factory(mCharID)
         characterVM = ViewModelProvider(this, vmFactory).get(CharacterViewModel::class.java)
 
         characterVM.character.observe(viewLifecycleOwner, Observer {
-            binding.image.setImageURI(Uri.parse(it.image))
+            Glide.with(this).load(it.image).into(binding.image)
             binding.nameTV.text = it.name
         })
 
