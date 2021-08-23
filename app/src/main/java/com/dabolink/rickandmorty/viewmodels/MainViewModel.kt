@@ -2,7 +2,6 @@ package com.dabolink.rickandmorty.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.dabolink.rickandmorty.models.APICallInfo
 import com.dabolink.rickandmorty.models.Character
 import com.dabolink.rickandmorty.models.Episode
 import com.dabolink.rickandmorty.models.Location
@@ -11,14 +10,32 @@ import com.dabolink.rickandmorty.services.RAMService
 class MainViewModel : ViewModel() {
     private val ramService: RAMService = RAMService()
 
-    private lateinit var charactersInfo: APICallInfo
-    val characters: LiveData<List<Character>> = ramService.getAllCharacters()
+    val characters: LiveData<ArrayList<Character>> = ramService.charactersLD.also {
+        ramService.loadCharacters()
+    }
 
-    private lateinit var locationsInfo: APICallInfo
-    val locations: LiveData<List<Location>> = ramService.getAllLocations()
+    val locations: LiveData<ArrayList<Location>> = ramService.locationsLD.also {
+        ramService.loadLocations()
+    }
 
-    private lateinit var episodesInfo: APICallInfo
-    val episodes: LiveData<List<Episode>> = ramService.getAllEpisodes()
+    val episodes: LiveData<ArrayList<Episode>> = ramService.episodesLD.also {
+        loadEpisodes()
+    }
 
+    fun loadCharacters() {
+        ramService.loadCharacters()
+    }
+
+    fun loadLocations() {
+        ramService.loadLocations()
+    }
+
+    fun loadEpisodes() {
+        ramService.loadEpisodes()
+    }
+
+    fun reloadCharacters() {
+        ramService.reloadCharacters()
+    }
 
 }

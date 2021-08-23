@@ -1,10 +1,11 @@
 package com.dabolink.rickandmorty.models
 
+import com.dabolink.rickandmorty.ui.main.TextItem
 import org.json.JSONArray
 import org.json.JSONObject
 
-data class Character(val json: JSONObject) {
-    val id: Int = json.getInt("id")
+data class Character(val json: JSONObject) : TextItem {
+    override val id: Int = json.getInt("id")
     val name: String = json.getString("name")
     val status: String = json.getString("status")
     val species: String = json.getString("species")
@@ -19,6 +20,10 @@ data class Character(val json: JSONObject) {
     }
     val url: String = json.getString("url")
     val created_at: String = json.getString("created")
+
+    override fun getText(): String {
+        return name
+    }
 
     override fun toString(): String {
         return name

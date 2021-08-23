@@ -5,8 +5,11 @@
     - episodes
     - locations
     - characters
-- []paging
+- [x]paging
 - []individual pages
 - []get images
 - []more pleasant UI
 - []favorite items?
+
+# ISSUES
+- [] on back recyclerview not redrawing

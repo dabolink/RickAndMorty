@@ -1,13 +1,11 @@
 package com.dabolink.rickandmorty.models
 
-import android.media.Image
-import com.dabolink.rickandmorty.ui.main.ImageTextItem
 import com.dabolink.rickandmorty.ui.main.TextItem
 import org.json.JSONArray
 import org.json.JSONObject
 
 data class Episode(val json: JSONObject) : TextItem {
-    val id: Int = json.getInt("id")
+    override val id: Int = json.getInt("id")
     val name: String = json.getString("name")
     val airDate: String = json.getString("air_date")
     val episode: String = json.getString("episode")
@@ -19,7 +17,7 @@ data class Episode(val json: JSONObject) : TextItem {
     val created: String = json.getString("created")
 
     override fun getText(): String {
-        return name
+        return "$id $name"
     }
 
     override fun toString(): String {

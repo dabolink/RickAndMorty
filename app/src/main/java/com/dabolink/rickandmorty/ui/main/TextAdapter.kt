@@ -1,51 +1,43 @@
 package com.dabolink.rickandmorty.ui.main
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
-import com.dabolink.rickandmorty.databinding.ImageTextItemBinding
+import com.dabolink.rickandmorty.databinding.TextItemBinding
 
-class TextAdapter: Adapter<TextAdapter.ViewHolder>() {
+class TextAdapter(onItemClicked: OnItemClicked? = null): Adapter<TextAdapter.ViewHolder>() {
+    var mItems: ArrayList<TextItem> = ArrayList()
+    val mOnItemClicked = onItemClicked
 
-    private var _binding: ImageTextItemBinding? = null
-    private val binding get() = _binding!!
-
-    var items: ArrayList<TextItem> = ArrayList()
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        lateinit var textView: TextView
-        lateinit var imageView: ImageView
+    inner class ViewHolder(private val binding: TextItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: TextItem) {
+            binding.text.text = item.getText()
+            binding.root.setOnClickListener {
+                mOnItemClicked?.onItemClicked(item)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater: LayoutInflater = LayoutInflater.from(parent.context)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = TextItemBinding.inflate(inflater)
 
-        _binding = ImageTextItemBinding.inflate(inflater, parent, false)
-        val root = binding.root
-
-        return ViewHolder(root)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
-
-        holder.imageView = binding.image
-        holder.textView = binding.text
-
-        holder.textView.text = item.getText()
+        holder.bind(mItems[position])
     }
 
     fun setItems(items: Collection<TextItem>) {
-        this.items.clear()
-        this.items.addAll(items)
-        notifyDataSetChanged()
+        val oldSize = items.size
+        mItems.clear()
+        mItems.addAll(items)
+        notifyItemRangeChanged(oldSize, mItems.size)
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return mItems.size
     }
 }

@@ -5,7 +5,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 data class Location(val json: JSONObject) : TextItem{
-    val id: Int = json.getInt("id")
+    override val id: Int = json.getInt("id")
     val name: String = json.getString("name")
     val type: String = json.getString("type")
     val dimension: String = json.getString("dimension")

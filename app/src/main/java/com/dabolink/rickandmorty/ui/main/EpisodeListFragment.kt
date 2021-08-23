@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.dabolink.rickandmorty.databinding.FragmentMainBinding
+import com.dabolink.rickandmorty.databinding.FragmentTextListBinding
 import com.dabolink.rickandmorty.viewmodels.MainViewModel
 
 /**
@@ -18,7 +18,7 @@ import com.dabolink.rickandmorty.viewmodels.MainViewModel
 class EpisodeListFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
-    private var _binding: FragmentMainBinding? = null
+    private var _binding: FragmentTextListBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -34,17 +34,30 @@ class EpisodeListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        _binding = FragmentTextListBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val recyclerView: RecyclerView = binding.recyclerview
-        val adapter = TextAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapter
+        val textAdapter = TextAdapter()
+        val llManager = LinearLayoutManager(context)
+
+        with(binding.recyclerview) {
+            layoutManager = llManager
+            adapter = textAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if(llManager.findLastVisibleItemPosition() == (adapter?.itemCount ?: 0) - 1) {
+                        mainViewModel.loadEpisodes()
+                    }
+                }
+            })
+        }
+
         mainViewModel.episodes.observe(viewLifecycleOwner, Observer {
             println("$it")
-            adapter.setItems(it)
+            textAdapter.setItems(it)
         })
+
         return root
     }
 

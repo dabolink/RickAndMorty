@@ -4,25 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.dabolink.rickandmorty.R
-import com.dabolink.rickandmorty.databinding.FragmentMainBinding
-import com.dabolink.rickandmorty.models.Character
+import com.dabolink.rickandmorty.databinding.FragmentTextListBinding
 import com.dabolink.rickandmorty.viewmodels.MainViewModel
-import java.util.*
 
 /**
  * A placeholder fragment containing a simple view.
  */
 class LocationListFragment : Fragment() {
 
-    private lateinit var mainVM: MainViewModel
-    private var _binding: FragmentMainBinding? = null
+    private lateinit var mainViewModel: MainViewModel
+    private var _binding: FragmentTextListBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -30,7 +26,7 @@ class LocationListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainVM = ViewModelProvider(this).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -38,16 +34,28 @@ class LocationListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        _binding = FragmentTextListBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val recyclerView: RecyclerView = binding.recyclerview
-        val adapter = TextAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapter
-        mainVM.locations.observe(viewLifecycleOwner, Observer {
+        val textAdapter = TextAdapter()
+        val llManager = LinearLayoutManager(context)
+
+        with(binding.recyclerview) {
+            layoutManager = llManager
+            adapter = textAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if(llManager.findLastVisibleItemPosition() == (adapter?.itemCount ?: 0) - 1) {
+                        mainViewModel.loadLocations()
+                    }
+                }
+            })
+        }
+
+        mainViewModel.locations.observe(viewLifecycleOwner, Observer {
             println("$it")
-            adapter.setItems(it)
+            textAdapter.setItems(it)
         })
 
         return root
@@ -55,8 +63,7 @@ class LocationListFragment : Fragment() {
 
     companion object {
         /**
-         * Returns a new instance of this fragment for the given section
-         * number.
+         * Returns a new instance of this fragment.
          */
         @JvmStatic
         fun newInstance(): LocationListFragment {

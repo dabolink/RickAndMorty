@@ -3,6 +3,6 @@ package com.dabolink.rickandmorty.models
 import org.json.JSONObject
 
 data class LocationRef(val jsonObject: JSONObject) {
-    var name = ""
-    var link = ""
+    val name: String = jsonObject.getString("name")
+    val url: String? = jsonObject.getString("url")
 }
