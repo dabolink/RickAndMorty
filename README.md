@@ -11,16 +11,26 @@ still to be added is:
 - ability to store data offline using a database (room probably)
 - better UI components (not my forte)
 
+# Dependencies
+    - OKHttp (REST API calls)
+    - Glide (images)
+    - Android Support Libraries
+        - fragments
+        - view binding
+        - ViewPager2 + tablayout
+        - ViewModels/LiveData
+
 # TODO
-- [x] list items
-    - episodes
-    - locations
-    - characters
-- [x]paging
-- [x]individual pages
-- [x]get images
-- []more pleasant UI
-- []favorite items?
+    - [x] list items
+        - episodes
+        - locations
+        - characters
+    - [x]paging
+    - [x]individual pages
+    - [x]get images
+    - [] background
+    - [] more pleasant UI
+    - [] favorite items?
 
 # ISSUES
 - [x] on back recyclerview not redrawing
