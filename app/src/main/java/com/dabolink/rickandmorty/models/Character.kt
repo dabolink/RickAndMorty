@@ -4,7 +4,7 @@ import com.dabolink.rickandmorty.ui.main.TextItem
 import org.json.JSONArray
 import org.json.JSONObject
 
-data class Character(val json: JSONObject) : TextItem {
+data class Character(private val json: JSONObject) : TextItem {
     override val id: Int = json.getInt("id")
     val name: String = json.getString("name")
     val status: String = json.getString("status")
@@ -15,7 +15,7 @@ data class Character(val json: JSONObject) : TextItem {
     val location: LocationRef = LocationRef(json.getJSONObject("location"))
     val image: String = json.getString("image")
     private val episodeJSON: JSONArray = json.getJSONArray("episode")
-    val episodes: Array<String> = Array(episodeJSON.length()) {
+    val episodes: List<String> = List(episodeJSON.length()) {
         episodeJSON.getString(it)
     }
     val url: String = json.getString("url")
