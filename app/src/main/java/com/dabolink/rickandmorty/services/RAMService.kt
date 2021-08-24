@@ -24,10 +24,15 @@ class RAMService {
     val episodesLD = MutableLiveData<ArrayList<Episode>>(ArrayList())
     val locationsLD = MutableLiveData<ArrayList<Location>>(ArrayList())
 
-    fun loadCharacters() {
+    fun loadCharacters(reload: Boolean = false) {
         if(loadingCharacterData) {
             return
         }
+        //reset data if we are reloading
+        if(reload) {
+            currentCharacterInfo = null
+        }
+
         loadingCharacterData = true
         val nextURI = getNextUri(currentCharacterInfo, "/character")
         if(nextURI == null) {
@@ -51,7 +56,7 @@ class RAMService {
                         val charactersJSON = charactersRespJSON.getJSONArray("results")
                         currentCharacterInfo = APICallInfo(charactersRespJSON.getJSONObject("info"))
 
-                        val allCharacters = charactersLD.value ?: ArrayList()
+                        val allCharacters = if (reload) ArrayList() else charactersLD.value ?: ArrayList()
 
                         val characters: ArrayList<Character> = ArrayList(charactersJSON.length())
                         for (i in 0 until charactersJSON.length()) {
@@ -188,12 +193,6 @@ class RAMService {
             .method("GET", null)
             .url(url).build()
         apiCLI.newCall(request).enqueue(callback)
-    }
-
-    fun reloadCharacters() {
-        currentCharacterInfo = null
-        charactersLD.postValue(ArrayList())
-        loadCharacters()
     }
 
     companion object {

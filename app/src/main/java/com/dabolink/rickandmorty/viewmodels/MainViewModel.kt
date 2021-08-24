@@ -35,7 +35,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun reloadCharacters() {
-        ramService.reloadCharacters()
+        ramService.loadCharacters(true)
     }
 
 }

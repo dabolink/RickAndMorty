@@ -17,7 +17,7 @@ data class Episode(val json: JSONObject) : TextItem {
     val created: String = json.getString("created")
 
     override fun getText(): String {
-        return "$id $name"
+        return "$episode $name"
     }
 
     override fun toString(): String {
